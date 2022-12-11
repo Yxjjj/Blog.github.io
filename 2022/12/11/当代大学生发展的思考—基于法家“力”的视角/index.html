@@ -16,19 +16,17 @@
   <meta name="author" content="叶么么">
   <meta name="keywords" content="">
   
-    <meta name="description" content="断点回归（Regression discontinuity design） 案例介绍 假如想探究上大学与不上大学对工资有什么影响，有多大影响。可以先简单假设上大学的工资为\(y_{1}\)，不上大学的工资为\(y_{0}\)，则上大学对收入带来的影响是\(y_{1}-y_{0}\)。接着建立一个建立一个线性混合回归模型，\(\omega\)为样本收入，\(edu\)为样本是否上大学（上大学值">
+    <meta name="description" content="当代大学生发展的思考—基于法家“力”的视角 法家的“力” 法家，诸子百家之一，是中国历史上提倡以法治为核心思想的重要学派，以富国强兵为己任。学派代表人物有李悝、吴起、商鞅、慎到、申不害、韩非子等人。法家主张积极入世去实践，主张富国强兵，注重政策的实用性。法家在成熟于春秋战国时期，在战国的秦朝得到全面的实践。法家实践中尤以“商鞅变法”为世人知晓。“商鞅变法”的核心是以农养战、力出一孔。秦国经过“">
 <meta property="og:type" content="article">
 <meta property="og:title" content="应统小霸王的🍉大大大世界">
-<meta property="og:url" content="https://yxjjj.github.io/Yxjjj.github.io/2022/12/11/%E6%96%AD%E7%82%B9%E5%9B%9E%E5%BD%92%EF%BC%88Regression%20discontinuity%20design%EF%BC%89/index.html">
+<meta property="og:url" content="https://yxjjj.github.io/Yxjjj.github.io/2022/12/11/%E5%BD%93%E4%BB%A3%E5%A4%A7%E5%AD%A6%E7%94%9F%E5%8F%91%E5%B1%95%E7%9A%84%E6%80%9D%E8%80%83%E2%80%94%E5%9F%BA%E4%BA%8E%E6%B3%95%E5%AE%B6%E2%80%9C%E5%8A%9B%E2%80%9D%E7%9A%84%E8%A7%86%E8%A7%92/index.html">
 <meta property="og:site_name" content="应统小霸王的🍉大大大世界">
-<meta property="og:description" content="断点回归（Regression discontinuity design） 案例介绍 假如想探究上大学与不上大学对工资有什么影响，有多大影响。可以先简单假设上大学的工资为\(y_{1}\)，不上大学的工资为\(y_{0}\)，则上大学对收入带来的影响是\(y_{1}-y_{0}\)。接着建立一个建立一个线性混合回归模型，\(\omega\)为样本收入，\(edu\)为样本是否上大学（上大学值">
+<meta property="og:description" content="当代大学生发展的思考—基于法家“力”的视角 法家的“力” 法家，诸子百家之一，是中国历史上提倡以法治为核心思想的重要学派，以富国强兵为己任。学派代表人物有李悝、吴起、商鞅、慎到、申不害、韩非子等人。法家主张积极入世去实践，主张富国强兵，注重政策的实用性。法家在成熟于春秋战国时期，在战国的秦朝得到全面的实践。法家实践中尤以“商鞅变法”为世人知晓。“商鞅变法”的核心是以农养战、力出一孔。秦国经过“">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://pic2.zhimg.com/v2-023596b4fd42f6c3abc203c6a2a38e91_r.jpg">
-<meta property="article:published_time" content="2022-12-11T12:25:52.099Z">
-<meta property="article:modified_time" content="2022-12-11T12:25:29.909Z">
+<meta property="article:published_time" content="2022-12-11T12:34:47.866Z">
+<meta property="article:modified_time" content="2022-12-11T12:25:07.927Z">
 <meta property="article:author" content="叶么么">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://pic2.zhimg.com/v2-023596b4fd42f6c3abc203c6a2a38e91_r.jpg">
   
   
   
@@ -208,7 +206,7 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-12-11 20:25" pubdate>
+        <time datetime="2022-12-11 20:34" pubdate>
           2022年12月11日 晚上
         </time>
       </span>
@@ -220,7 +218,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          4.6k 字
+          1.8k 字
         
       </span>
     
@@ -231,7 +229,7 @@
         
         
         
-          39 分钟
+          16 分钟
         
       </span>
     
@@ -274,145 +272,49 @@
             
               <div class="markdown-body">
                 
-                <h1 id="断点回归regression-discontinuity-design">断点回归（Regression
-discontinuity design）</h1>
-<h2 id="案例介绍">案例介绍</h2>
-<p>假如想探究上大学与不上大学对工资有什么影响，有多大影响。可以先简单假设上大学的工资为<span
-class="math inline">\(y_{1}\)</span>，不上大学的工资为<span
-class="math inline">\(y_{0}\)</span>，则上大学对收入带来的影响是<span
-class="math inline">\(y_{1}-y_{0}\)</span>。接着建立一个建立一个线性混合回归模型，<span
-class="math inline">\(\omega\)</span>为样本收入，<span
-class="math inline">\(edu\)</span>为样本是否上大学（上大学值为1，不上大学为0），<span
-class="math inline">\(\epsilon\)</span>为随机误差项。 <span
-class="math display">\[
-\ln\omega=\beta_{0}+\beta_{1}edu+\epsilon
-\]</span>
-(1)模型存在内生性（模型因变量与随机误差项相关）的问题。考上大学的同学本身能力就比较高，因此高考分数比较高，进入工作岗位之后，高能力使得工资更高。或是，家里面父母比较有钱，可以上辅导班、培训班。如果忽略了这些因素，则会导致教育回报率估计不一致的问题。但是在实际生活中找不到这样的样本，除非找到两个样本满足这样的条件：除了上大学有区别，其他情况（家庭情况、地域影响、生理结构等等）都相同。此时考虑选择RDD（Regression
-discontinuity design）实验是合理的。</p>
-<h2 id="rdd介绍">RDD介绍</h2>
-<p>RDD：断点回归设计是一种准自然实验, 其基本思想是存在一个连续变量,
-该变量能决定个体在某一临界点两侧接受政策干预的概率,
-由于X在该临界点两侧是连续的，因此个体针对X的取值落入该临界点任意一侧是随机发生的,
-即不存在人为操控使得个体落入某一侧的概率更大,
-则在临界值附近构成了一个准自然实验。一般将该连续变量X称为分组变量
-(Assignment variable)。</p>
-RDD实验分为两个组别，对照组和实验组。对照组和实验组的样本选取不是随机的，是有设计的。在上述案例中，设计样本选取规则为，是否上大学取决于高考分是否超过400分，(1)式中的<span
-class="math inline">\(edu_{i}\)</span>便为一个关于<span
-class="math inline">\(x_{i}\)</span>的示性函数。 $$ edu_{i}=
-<span class="math display">\[\begin{cases}
-1,x_{i}\geq400
-\\
-0,x_{i}&lt;400
-
-\end{cases}\]</span>
-<p>$$
-为此选取一个标准线附件的样本组，假设本科分数线为400分，我们选取区间<span
-class="math inline">\([-\delta+400,+\delta+400]\)</span>中的样本。倾向于认为这些同学的能力和家庭背景（定义中的政策）大致是类似的，便消除了对照组和实验组的系统性差异，因为他们之间没有明显的能力差距。对于这些同学来说，考上大学是一个随机事件。因此，此时使用OLS（Ordinary
-least
-squares）估计对这些样本进行回归，就可以得到一致估计量。那么该如何选择400分附近的样本呢？这里有一个权衡，如果选的太少，随机性更好，但是样本量会非常小。而如果选的样本太多，样本量增大了，但是可能随机性没办法得到保障。因为520分和480分大概率是有着比较大的能力差距的。这里便存在窗宽<span
-class="math inline">\(\delta\)</span>选取的问题。</p>
-<p>直接强硬的选400分为分界点可能会出现一些问题。比如说小西同学:watermelon:高考分数为403分，但家庭条件较差，不愿花几万去读民办本科，放弃读书；而小瓜:melon:同学高考分数只考到了396分，但他获得本科院校的降分许可，考上大学。对此，RDD分为了两种情况：Sharp
-RD 和 Fuzzy
-RD。前者是说如果成绩达到400分，一定去读大学，反之上不了大学。后者是说，即使成绩达到了400分，可能也不去读书，而没到本科线的可能也去读一本了（降分录取），Fuzzy
-RD只是要求成绩达到400之后，上一本的概率比成绩低于400分的概率更大。</p>
-<p>回到最开始的问题，上不上大学对收入影响几何？这其实就是要找： <span
-class="math display">\[
-Y_{1i}-Y_{0i}
-\]</span>
-此时出现了之前的问题，对于任何一个个体，要么上大学了，要么没上大学。我们没办法同时得知其没上大学的收入和上大学的收入。此处，因为在断点附近，样本是随机的。因此，可用下面的式子近似代替上面的式子：
-<span class="math display">\[
-\lim\limits_{score\uparrow{60}}{E[Y_{1i}|score]}-\lim\limits_{score\downarrow60}E[Y_{0i}|score]
-\]</span> 回归图如下所示：</p>
-<p><img src="https://pic2.zhimg.com/v2-023596b4fd42f6c3abc203c6a2a38e91_r.jpg" srcset="/Yxjjj.github.io/img/loading.gif" lazyload style="zoom: 33%;" /></p>
-<p>400分的学子如果不上大学，其收入应该和399分的学子。即虽然一个人无法同时踏入两条河流，但是我们认为在400分附近的个体都可以找到一个影子（踏入另一条河流的影子）。即上面那条线的红色部分是没上一本的人如果上了一本的收入，而下面那条线的红色部分是上了大学的人如果没上大学的收入（的人，都是我们基于随机性假设设想出来的）。通过上面两条线可知，我们其实关心的教育的回报率就是两条线截距项之差<span
-class="math inline">\(\beta_{1}\)</span>。当然，因为这两条线平行，因此在任何一个分数水平上，两类群体的工资之差都是一样的。</p>
-<p>上面施加了一个重要限制，就是说两条线的斜率一样。这意味着，对于考了400分的人来说，上大学和不上大学的工资之差与考了650分的人是一样的。但这可能不合理，因为650分足够上民大了，考上民大的人比考上一般大学的人工资可能高得多（推测），但是如果那两个人都没上大学在现代看学历的社会反而可能收入水平类似。因此，可以允许上面的线斜率不同。即加入截距项：
-<span class="math display">\[
-\ln\omega=\beta_{0}+\beta_{1}edu+\beta_{2}score+\beta_{3}edu*score+\epsilon
-\]</span>
-但是，这时候两条线的截距项之差就不是400分时两条线之差了。怎么办呢？此时需要去中心化，即<span
-class="math inline">\((score-400)\)</span>，新的回归方程为： <span
-class="math display">\[
-\ln\omega=\beta_{0}+\beta_{1}edu+\beta_{2}(score-400)+\beta_{3}edu*(score-400)+\epsilon
-\]</span>
-当然根据时间，可能需要加入二次方项，三次方项，或者四次方项。然后继续用OLS估计。但是，上面的加入几次项感觉有些随意，为什么不加100次方项呢？因此，随之而来了非参数方法。</p>
-<p>对于最佳窗宽<span
-class="math inline">\(\delta\)</span>的选取很难去确定，且当函数有具体形式时与函数形式有关。此时考虑非参数回归，不局限函数的形式（根据最小均方误差去选取<span
-class="math inline">\(\delta\)</span>）。</p>
-<h2 id="实际案例应用">实际案例应用</h2>
-<p>这里选取张川川和陈斌开的文章《“社会养老”能否替代“家庭养老”?——来自中国新型农村社会养老保险的证明》</p>
-<h3 id="文章摘要">文章摘要</h3>
-<p>中国农村人口老龄化日趋严重，“养儿防老”的传统模式难以持续。基于最新中国健康与养老追踪调查(CHARLS)的微观数据，本文利用断点回归方法实证研究了以“新农保”为基础的农村“社会养老”模式对“家庭养老”的替代性。研究结果显示，获得新农保养老金收入的农村老年人，其获得私人转移支付的概率下降了大约32-56个百分点，然而，对于已经获得转移支付的老年人，并未发现新农保养老金收入对他们获得的私人转移支付数额存在显著影响。本文的研究结论表明，“社会养老”对传统“家庭养老”存在一定程度的替代，但当前效果有限，完善中国农村的“社会养老”模式有待于进一步提高保障水平。</p>
-<h3 id="案例分析">案例分析</h3>
-<p>新农保养老金对私人转移支付的影响，作者利用新农保制度设计的特点，采用断点回归设定(RD)来检验新农保养老金对私人转移支付的替代效应。</p>
-<p>根据新农保试点《指导意见》，养老金待遇的领取遵循年龄规则，即只有年满60周岁才可以领取养老金。</p>
-<p><span
-class="math inline">\(D_{i}\)</span>为处理状态变量。此处表示是否领取养老金，等于1表示领取养老金，否则为0；<span
-class="math inline">\(z_{i}\)</span>表示受访者i的年龄。(7)式表明<span
-class="math inline">\(D_{i}\)</span>是年龄<span
-class="math inline">\(z_{i}\)</span>的非连续函数,60岁为断点,即无论<span
-class="math inline">\(z_{i}\)</span>如何接近60,<span
-class="math inline">\(D_{i}\)</span>都不会发生变化,直到<span
-class="math inline">\(z_{i}\)</span>等于60。RD研究文献中将变量<span
-class="math inline">\(z_{i}\)</span>称作驱动变量。</p>
-如果(7)式成立,对(8)式方程进行回归即可得到养老金收入对变量<span
-class="math inline">\(Y_{i}\)</span>的因果性影响。<span
-class="math inline">\(f(z_{i})\)</span>是<span
-class="math inline">\(z_{i}\)</span>的多项式函数。这里采用了Sharp
-RD。在很多情况下,处理状态<span
-class="math inline">\(D_{i}\)</span>虽然是驱动变量<span
-class="math inline">\(z_{i}\)</span>的非连续函数,但在断点处未必是从0到1的变化,而只是增大了<span
-class="math inline">\(D_{i}\)</span>取值为1的概率,即<span
-class="math inline">\(D_{i}\)</span>和<span
-class="math inline">\(z_{i}\)</span>存在(9)式关系。 $$ D_{i}=
-<span class="math display">\[\begin{cases}
-1,x_{i}\geq60
-\\
-0,x_{i}&lt;60
-
-\end{cases}\]</span>
-<p>$$</p>
-<p><span class="math display">\[
-Y_{i}=\alpha+\rho{D_{i}}+f(z_{i})+\epsilon_{i}
-\]</span></p>
-<p><span class="math display">\[
-P[D_{i}=1|z_{i}]=\begin{cases}
-{g_{1}(z_{i}) ,z_{i}\geq60}
-\\
-{g_{0}}(z_{i}),z_{i}&lt;60
-\end{cases}
-\text{  ,}
-g_{1}(z_{i})\neq{g_{0}}(z_{i})
-\]</span></p>
-<p>在本文的研究背景下,假定<span
-class="math inline">\(g_{1}(z_{i})&gt;g_{0}(z_{i})\)</span>，即60岁及以上的参保者领取养老金的概率大于60岁以下的参保者,按照政策规定,这是一个非常合理的假定。在(9)式成立的情况下,所采用的RD为模糊RD(Fuzzy
-RD)。 <span class="math display">\[
-D_{i}=\delta+f(z_{i})+\theta{T_{i}}+\mu_{i}
-\]</span>
-下图显示了作为驱动变量的年龄同是否领取养老金之间的关系，这相当于Fuzzy
-RD估计中的一阶段。可以明显看到在60岁附近有一个跳点，具体的跳点发生在60.5岁和60.75岁，这同年满60周岁可以领取养老金的新农保政策规定基本一致。跳点之所以不是恰好发生在60岁，是由于养老金在实际发放中存在季节性问题，例如地方政府可能倾向于在年末集中发放养老金。根据图1的结果，在回归分析中以年龄等于60.5作为断点，而非60。</p>
-<figure>
-<img
-src="C:\Users\Y\AppData\Roaming\Typora\typora-user-images\image-20221204204850528.png" srcset="/Yxjjj.github.io/img/loading.gif" lazyload
-alt="image-20221204204850528" />
-<figcaption aria-hidden="true">image-20221204204850528</figcaption>
-</figure>
-<figure>
-<img
-src="C:\Users\Y\AppData\Roaming\Typora\typora-user-images\image-20221204205020304.png" srcset="/Yxjjj.github.io/img/loading.gif" lazyload
-alt="image-20221204205020304" />
-<figcaption aria-hidden="true">image-20221204205020304</figcaption>
-</figure>
-<p>图2A部分显示了驱动变量同是否从子女处获得私人转移支付的关系，这相当于Fuzzy
-RD估计中简约型(reduced
-form)结果。我们再次看到了明显的跳点，私人转移支付在断点处有显著的下降。这初步表明了新农保养老金收入替代了来自子女的转移支付。尽管父母获得私人转移支付主要来自子女，但是仍然有一定比例的私人转移支付来自子女以外的亲属或朋友。图2B部分显示了驱动变量同是否从任何亲属或朋友处获得私人转移支付的关系。结果同图2A非常相似。</p>
-<p>在图1中,我们展示了很强的一阶段关系,即年满60岁显著增大了领取养老金的概率。图2则显示了私人转移支付在年龄断点处有显著下降。尽管这些图形清晰的展示了政策规定所导致的处理状态变量(是否领取养老金)和结果变量(私人转移支付)的非连续变动,并且初步表明新农保养老金收入替代了私人转移支付。整体来看,无论是采用不同的年龄带宽,还是采用不同的被解释变量,结果都一致表明,新农保养老金收入显著降低了农村老年人获得私人转移支付的概率。此处结论和陈华帅和曾毅(2013)一致,但所发现的效应要小的多。</p>
-<figure>
-<img
-src="C:\Users\Y\AppData\Roaming\Typora\typora-user-images\image-20221204205613568.png" srcset="/Yxjjj.github.io/img/loading.gif" lazyload
-alt="image-20221204205613568" />
-<figcaption aria-hidden="true">image-20221204205613568</figcaption>
-</figure>
+                <h1
+id="当代大学生发展的思考基于法家力的视角">当代大学生发展的思考—基于法家“力”的视角</h1>
+<h2 id="法家的力">法家的“力”</h2>
+<p>法家，诸子百家之一，是中国历史上提倡以法治为核心思想的重要学派，以富国强兵为己任。学派代表人物有李悝、吴起、商鞅、慎到、申不害、韩非子等人。法家主张积极入世去实践，主张富国强兵，注重政策的实用性。法家在成熟于春秋战国时期，在战国的秦朝得到全面的实践。法家实践中尤以“商鞅变法”为世人知晓。“商鞅变法”的核心是以农养战、力出一孔。秦国经过“变法运动”，推动了国家的进步，促进了经济的发展。“商鞅变法”随着秦孝公的去世而结束，商鞅也惨遭“车裂”之刑，尽管主张“变法”的商鞅被处死，但“变法”改革的制度在秦国进行实施。接下来关于法家核心的思想均以秦国为例进行说明。</p>
+<p>法家的“力”，分为三个过程：生力、抟力和杀力。生力是指百姓从事劳作，产生“力”；抟力是指国家对于产生的“力”进行收集，统一；杀力是指国家使用收集的“力”进行资源的消耗。秦国的生力是强制国民参加农耕或是战争，断绝国民从事其他工作的路径（如工商业、艺术），导致国民只有两条路可走。国民的生产力集中到一块被国家使用，这也是法家核心思想“力出一孔”的体现。农耕的人变多了（秦国国土面积大，人均耕地面积相较其他国家较大），国家的资源变丰厚了；军队的战士变多了，国家便可对外发动战争。农耕增加的资源保障了军队的后勤补给，最终秦国逐步统一天下。纵向看秦国的兴衰，从弱到强，再到统一天下，最终二世而亡。后世关于秦国灭亡的原因众说纷纭，有人认为秦国灭亡是秦国民众对于秦国没有国家归属感；也有人认为秦国农战思想太过功利，不利于国家的长久发展。秦国二世而亡的原因多种多样，对法家治理国家的态度有积极的，也有消极的。积极的一面认为法家重实践，事半功倍；消极的一面认为法家不“仁”，管理民众太生硬。不论后世治理者对法家的态度如何，都会使用法家思想去治理国家，这足以说明法家的实用性。</p>
+<h2 id="秦国的失败给出的教训">秦国的失败给出的教训</h2>
+<p>秦国二世而亡的原因没有统一的答案，但可以获得一些相关的经验教训。</p>
+<h3 id="矛盾冲突的对象">矛盾冲突的对象</h3>
+<p>秦国一统天下后，国家的状态便发生改变。原来是一个处于战时状态的国家，国家上下以敌国为冲突对象。国家君王构建了“敌国”这样一个冲突对象给臣民，上下拧成一股绳，使得国家能够高效地生力、抟力和杀力。现在是一个统一、百废待兴的国家，秦国吞并了六国，原来的冲突对象消失。按照原来的发展模式，国家的杀力宣泄口消失，需要重新构建。并且考虑到原六国国民被灭国的因素，国家还需要花费精力去协调秦人与原六国人产生的矛盾冲突。此时原先的“农战”国策不再适合，需要去转型为一个正常的官僚制国家。国家不再以“战”为生，而是需要考虑发展工商业。</p>
+<h2 id="当代大学生与力的联系">当代大学生与“力”的联系</h2>
+<p>中国大部分学生从小学到高中毕业，他的目标只有一个考上好的大学。造成这种线下原因有很多：传统文化对于学历的畸形渴求与重视（中国的大部分地区如浙江、江苏、江西等等）；父母、老师及身边人灌输的思想（好好学习，上个好大学便轻松了)；成长环境（父母、老师）的对于高考的一路“绿灯”，只重视应试教育，忽略了孩子其他方面的成长；中国自身的国情，社会就业压力大，需要一个好文凭。学生学习应试知识，读书12年，只为高考这件事。导致学生进入大学会进入一个“无所适从”的状态，这种状态常表现为停止学习、痴迷于除“学习”以外的一切事情。</p>
+<p>上述现象，若以法家的视角去看，父母对于小孩的培养是与法家“力出一孔”核心思想十分契合的。父母将培养孩子所有的资源、精力使用在应试上，也切断了小孩发展的其他可能，只让小孩去准备应试。当孩子考上了大学，便像秦国统一天下一样，完成了各自最初的目标。但就像秦统一天下需要调整治国方案一样，很多学生上大学时，他需要去花时间去调整自己十二年的生活模式—只准备考试。他们需要适应一种“力出多孔”的生活，大学的生活不再只是提高绩点，他们可以加入社团组织，参与社会公益。此时学习不再是生活唯一的目标，但很多学生的思维模式仍然停在高考之前，认为“万般皆下品，唯有绩点高”。这种思维模式不能说是绝对正确的，因为提高绩点的有效方式便是投入大量精力到很少的知识点中，你会学习到课程知识，但与你付出的精力相比，学习到的课程知识不值一提。以“绩点”为导向的思维模式转变需要时间，往往大学生到了大二大三才能转换过来。</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;"></th>
+<th>秦国发展</th>
+<th>孩子培养</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">发展方式</td>
+<td>农战</td>
+<td>准备高考</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">发展思维</td>
+<td>力出一孔</td>
+<td>力出一孔</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">目标</td>
+<td>强国、统一天下</td>
+<td>考上大学</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">完成目标后的调整</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 
                 
               </div>
@@ -431,7 +333,7 @@ alt="image-20221204205613568" />
   <div class="license-box my-3">
     <div class="license-title">
       <div></div>
-      <div>https://yxjjj.github.io/Yxjjj.github.io/2022/12/11/断点回归（Regression discontinuity design）/</div>
+      <div>https://yxjjj.github.io/Yxjjj.github.io/2022/12/11/当代大学生发展的思考—基于法家“力”的视角/</div>
     </div>
     <div class="license-meta">
       
@@ -475,15 +377,15 @@ alt="image-20221204205613568" />
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/Yxjjj.github.io/2022/12/11/%E6%8A%8A%E6%80%9D%E6%83%B3%E5%92%8C%E8%A1%8C%E5%8A%A8%E7%BB%9F%E4%B8%80%E5%88%B0%E5%85%9A%E7%9A%84%E4%BA%8C%E5%8D%81%E5%A4%A7%E7%B2%BE%E7%A5%9E%E4%B8%AD/" title="">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile"></span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/Yxjjj.github.io/2022/12/11/%E6%8A%8A%E6%80%9D%E6%83%B3%E5%92%8C%E8%A1%8C%E5%8A%A8%E7%BB%9F%E4%B8%80%E5%88%B0%E5%85%9A%E7%9A%84%E4%BA%8C%E5%8D%81%E5%A4%A7%E7%B2%BE%E7%A5%9E%E4%B8%AD/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>
